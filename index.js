@@ -4,7 +4,7 @@ const c = canvas.getContext('2d')
 canvas.width = 1024
 canvas.height = 576
 
-const imgScale = 1
+const imgScale = 2.5
 
 const scaledCanvas = {
     width: canvas.width / imgScale,
@@ -100,10 +100,11 @@ window.addEventListener('keyup', (event) => {
 const player = new Player({
     position: {
         x: 200,
-        y: 500
+        y: 700
     },
     floorBlocks,
-    platformBlocks
+    platformBlocks,
+    imageSrc: playerAnimations.idle
 })
 
 const background = new Sprite({
@@ -115,7 +116,6 @@ const background = new Sprite({
 })
 
 function animate() {
-    window.requestAnimationFrame(animate)
     drawCanvas()
 
     c.save()
@@ -138,7 +138,7 @@ function animate() {
     else if (keys.a.pressed) { player.velocity.x = -5 }
 
     c.restore()
-
+    window.requestAnimationFrame(animate)
 }
 
 animate()
