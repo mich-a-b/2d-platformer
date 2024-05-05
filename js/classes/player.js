@@ -1,17 +1,19 @@
 const gravity = 0.1
 
 class Player extends Sprite {
-    constructor({ position, floorBlocks, platformBlocks, imageSrc }) {
-        super({ imageSrc: imageSrc[0] })
+    constructor({ position, floorBlocks, platformBlocks, animations }) {
+        super({ imageSrc: animations.idle.images[0] })
         this.position = position
         this.velocity = {
             x: 0,
             y: 1
         }
-        this.frames = imageSrc
+
+        this.frames = animations.idle.images
+        this.frameBuffer = animations.idle.frameBuffer
+        this.frameInterval = animations.idle.images.length
         this.frameIndex = 0
         this.frameTimer = 0
-        this.frameInterval = 100
 
         this.floorBlocks = floorBlocks
         this.platformBlocks = platformBlocks
@@ -23,22 +25,14 @@ class Player extends Sprite {
             width: 25,
             height: 45.5
         }
+
+        this.animations = animations
+        this.lastDirection = 'right'
     }
 
     update() {
         this.animateFrames();
-        
-
-        // draws whole image
-        // c.fillStyle = 'rgba(0, 255, 0, 0.2'
-        // c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
-        // draws hitbox
-        // c.fillStyle = 'rgba(255, 0, 0, 0.2)'
-        // c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height)
-
-
-        this.draw()
+        this.draw(this.lastDirection)
         this.position.x += this.velocity.x
         this.updateHitbox();
         this.checkHorizontalCollisions()
@@ -58,19 +52,28 @@ class Player extends Sprite {
         }
     }
 
+    swapAnimation(animation){ 
+        if (this.frames === this.animations[animation].images || !this.loaded) return;
+        this.frames = this.animations[animation].images;
+        this.frameBuffer = this.animations[animation].frameBuffer;
+        this.frameInterval = this.animations[animation].images.length;
+        this.frameIndex = 0;
+        this.frameTimer = 0;
+    }
+
     animateFrames() {
-        if (this.frameTimer > this.frameInterval) {
-            this.frameIndex = (this.frameIndex + 1) % this.frames.length
-            this.image.src = this.frames[this.frameIndex]
-            this.frameTimer = 0
+        if (this.frameTimer > this.frameInterval * this.frameBuffer) {
+            this.frameIndex = (this.frameIndex + 1) % this.frames.length;
+            this.image.src = this.frames[this.frameIndex];
+            this.frameTimer = 0;
         } else {
-            this.frameTimer += 13.00
+            this.frameTimer += 16.67;
         }
     }
 
     applyGravity() {
-        this.position.y += this.velocity.y
         this.velocity.y += gravity
+        this.position.y += this.velocity.y
     }
 
     checkVerticalCollisions() {

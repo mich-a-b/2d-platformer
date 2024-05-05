@@ -4,7 +4,7 @@ const c = canvas.getContext('2d')
 canvas.width = 1024
 canvas.height = 576
 
-const imgScale = 2.5
+const imgScale = 2
 
 const scaledCanvas = {
     width: canvas.width / imgScale,
@@ -64,37 +64,18 @@ const keys = {
     a: {
         pressed: false
     },
+    w: {
+        pressed: false
+    },
 
 }
 
 window.addEventListener('keydown', (event) => {
-    switch (event.key) {
-        case 'd':
-            keys.d.pressed = true
-            break;
-        case 'a':
-            keys.a.pressed = true
-            break;
-        case 'w':
-            player.velocity.y = -5
-            break;
-        case ' ':
-            player.velocity.y = -5
-            break;
-
-    }
+    keys[event.key].pressed = true
 })
 
 window.addEventListener('keyup', (event) => {
-    switch (event.key) {
-        case 'd':
-            keys.d.pressed = false
-            break;
-        case 'a':
-            keys.a.pressed = false
-            break;
-
-    }
+    keys[event.key].pressed = false
 })
 
 const player = new Player({
@@ -104,7 +85,7 @@ const player = new Player({
     },
     floorBlocks,
     platformBlocks,
-    imageSrc: playerAnimations.idle
+    animations: playerAnimations
 })
 
 const background = new Sprite({
@@ -121,7 +102,7 @@ function animate() {
     c.save()
 
     c.scale(imgScale, imgScale)
-    c.translate(0, -background.image.height + scaledCanvas.height)
+    c.translate(0, - background.image.height + scaledCanvas.height)
     background.update()
 
     floorBlocks.forEach((collisionBlock) => {
@@ -132,13 +113,36 @@ function animate() {
     })
 
     player.update()
-
-    player.velocity.x = 0
-    if (keys.d.pressed) { player.velocity.x = 5 }
-    else if (keys.a.pressed) { player.velocity.x = -5 }
+    movePlayer()
 
     c.restore()
     window.requestAnimationFrame(animate)
+}
+
+function movePlayer() {
+    player.velocity.x = 0
+
+    if(keys.w.pressed) {
+        player.velocity.y = -3
+    }
+    
+    if (keys.d.pressed) { 
+        player.lastDirection = 'right'
+        player.swapAnimation('run')
+        player.velocity.x = 1.5
+    } else if (keys.a.pressed) { 
+        player.lastDirection = 'left'
+        player.swapAnimation('run')
+        player.velocity.x = -1.5 
+    } else if (player.velocity.y === 0) {
+        player.swapAnimation('idle')
+    }
+
+    if (player.velocity.y < 0) { 
+        player.swapAnimation('jump_up')
+    } else if (player.velocity.y > 0) { 
+        player.swapAnimation('jump_down')
+    } 
 }
 
 animate()
