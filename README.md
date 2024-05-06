@@ -5,3 +5,7 @@ Welcome to the repository for my simple example of a 2D platformer game! This ga
 ### Prerequisites
 
 - A modern web browser (e.g., Chrome, Firefox, Safari)
+
+### Demo
+
+2d.mk-ultra.co.za
