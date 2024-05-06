@@ -68,8 +68,6 @@ const keys = {
 window.addEventListener('keydown', (event) => {
     if(event.key in keys) keys[event.key].pressed = true
 
-    console.log(event.key);
-
     switch(event.key) {
         case 'h':
             player.attacking = true
