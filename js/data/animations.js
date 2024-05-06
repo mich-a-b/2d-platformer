@@ -26,7 +26,7 @@ const playerAnimations = {
         ]
     },
     jump: {
-        frameBuffer: 5,
+        frameBuffer: 3,
         images: [
             './img/player/03_jump/jump_1.png',
             './img/player/03_jump/jump_2.png',
@@ -67,7 +67,7 @@ const playerAnimations = {
         ]
     },
     roll: {
-        frameBuffer: 1.0,
+        frameBuffer: 20,
         images: [
             './img/player/04_roll/roll_1.png',
             './img/player/04_roll/roll_2.png',
@@ -80,7 +80,7 @@ const playerAnimations = {
         ]
     },
     atk_1: {
-        frameBuffer: 1.0,
+        frameBuffer: 8,
         images: [
             './img/player/05_1_atk/1_atk_1.png',
             './img/player/05_1_atk/1_atk_2.png',
@@ -96,7 +96,7 @@ const playerAnimations = {
         ]
     },
     atk_2: {
-        frameBuffer: 1.0,
+        frameBuffer: 6,
         images: [
             './img/player/06_2_atk/2_atk_1.png',
             './img/player/06_2_atk/2_atk_2.png',
@@ -120,7 +120,7 @@ const playerAnimations = {
         ]
     },
     atk_3: {
-        frameBuffer: 1.0,
+        frameBuffer: 4,
         images: [
             './img/player/07_3_atk/3_atk_1.png',
             './img/player/07_3_atk/3_atk_2.png',
@@ -153,7 +153,7 @@ const playerAnimations = {
         ]
     },
     sp_atk: {
-        frameBuffer: 1.0,
+        frameBuffer: 6,
         images: [
             './img/player/08_sp_atk/sp_atk_1.png',
             './img/player/08_sp_atk/sp_atk_2.png',
@@ -176,7 +176,7 @@ const playerAnimations = {
         ]
     },
     defend: {
-        frameBuffer: 1.0,
+        frameBuffer: 8,
         images: [
             './img/player/09_defend/defend_1.png',
             './img/player/09_defend/defend_2.png',

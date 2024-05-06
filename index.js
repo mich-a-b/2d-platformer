@@ -1,14 +1,14 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = 1024
-canvas.height = 576
+canvas.width = 1280
+canvas.height = 720
 
-const imgScale = 2
+const scale = 2
 
 const scaledCanvas = {
-    width: canvas.width / imgScale,
-    height: canvas.height / imgScale,
+    width: canvas.width / scale,
+    height: canvas.height / scale,
 }
 
 
@@ -44,17 +44,12 @@ platformCollisions2D.forEach((row, y) => {
                 position: {
                     x: x * 32,
                     y: y * 32
-                }
+                },
+                height: 8
             }))
         }
     })
 })
-
-// function
-function drawCanvas() {
-    c.fillStyle = 'black'
-    c.fillRect(0, 0, canvas.width, canvas.height)
-}
 
 
 const keys = {
@@ -71,7 +66,40 @@ const keys = {
 }
 
 window.addEventListener('keydown', (event) => {
-    keys[event.key].pressed = true
+    if(event.key in keys) keys[event.key].pressed = true
+
+    console.log(event.key);
+
+    switch(event.key) {
+        case 'h':
+            player.attacking = true
+            player.swapAnimation('atk_1')
+            setTimeout(() => {player.attacking = false}, 500) 
+            break; 
+        case 'j':
+            player.attacking = true
+            player.swapAnimation('atk_2')
+            setTimeout(() => {player.attacking = false}, 1000) 
+            break; 
+        case 'k':
+            player.attacking = true
+            player.swapAnimation('atk_3')
+            setTimeout(() => {player.attacking = false}, 1500) 
+            break;
+        case 'l':
+            player.attacking = true
+            player.swapAnimation('sp_atk')
+            setTimeout(() => {player.attacking = false}, 900) 
+            break; 
+        case ' ':
+            player.rolling = true
+            player.swapAnimation('roll')
+            setTimeout(() => {player.rolling = false}, 500) 
+            break; 
+        case 'm':
+            player.swapAnimation('defend')
+            break; 
+    }
 })
 
 window.addEventListener('keyup', (event) => {
@@ -96,13 +124,27 @@ const background = new Sprite({
     imageSrc: './img/background.png'
 })
 
+const backgroundImage = {
+    height: 1024,
+    width: 1792
+}
+const camera = {
+    position: {
+        x: 0,
+        y: -backgroundImage.height + scaledCanvas.height + 100,
+    }
+}
+
 function animate() {
-    drawCanvas()
+    window.requestAnimationFrame(animate)
+
+    c.fillStyle = 'black'
+    c.fillRect(0, 0, canvas.width, canvas.height)
 
     c.save()
 
-    c.scale(imgScale, imgScale)
-    c.translate(0, - background.image.height + scaledCanvas.height)
+    c.scale(scale, scale)
+    c.translate(camera.position.x, camera.position.y)
     background.update()
 
     floorBlocks.forEach((collisionBlock) => {
@@ -112,38 +154,63 @@ function animate() {
         collisionBlock.update()
     })
 
+    player.checkHorizontalCanvasCollision({image: backgroundImage})
+    player.checkVerticalCanvasCollision()
     player.update()
     movePlayer()
 
     c.restore()
-    window.requestAnimationFrame(animate)
+    
 }
 
 function movePlayer() {
     player.velocity.x = 0
 
     if(keys.w.pressed) {
-        player.velocity.y = -3
+        if (player.velocity.y === 0) player.velocity.y = -7
     }
     
     if (keys.d.pressed) { 
         player.lastDirection = 'right'
-        player.swapAnimation('run')
+        if(!player.attacking && !player.rolling) player.swapAnimation('run')
         player.velocity.x = 1.5
+        player.panLeft({canvas: canvas, camera: camera, scale: scale, image: backgroundImage})
     } else if (keys.a.pressed) { 
         player.lastDirection = 'left'
-        player.swapAnimation('run')
+        if(!player.attacking && !player.rolling) player.swapAnimation('run')
         player.velocity.x = -1.5 
-    } else if (player.velocity.y === 0) {
+        player.panRight({camera: camera})
+    } else if (player.velocity.y === 0 && !player.attacking) {
         player.swapAnimation('idle')
     }
 
     if (player.velocity.y < 0) { 
-        player.swapAnimation('jump_up')
+        player.panDown({camera: camera})
+        if(!player.attacking && !player.rolling) player.swapAnimation('jump_up')
     } else if (player.velocity.y > 0) { 
-        player.swapAnimation('jump_down')
+        player.panUp({canvas: canvas, camera: camera, scale: scale, image: backgroundImage})
+        if(!player.attacking && !player.rolling) player.swapAnimation('jump_down')
     } 
 }
-
 animate()
 
+
+function resizeCanvas() {
+    const heightRatio = 9 / 16;  // This is an example ratio; adjust as needed
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerWidth * heightRatio;
+
+    // Ensure the canvas does not exceed the height of the window
+    if (canvas.height > window.innerHeight) {
+        canvas.height = window.innerHeight;
+        canvas.width = canvas.height / heightRatio;
+    }
+
+    // Center the canvas
+    canvas.style.position = "absolute";
+    canvas.style.left = (window.innerWidth - canvas.width) / 2 + 'px';
+    canvas.style.top = (window.innerHeight - canvas.height) / 2 + 'px';
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
