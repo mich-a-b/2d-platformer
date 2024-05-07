@@ -114,6 +114,16 @@ const player = new Player({
     animations: playerAnimations
 })
 
+// const player2 = new Player({
+//     position: {
+//         x: 400,
+//         y: 700
+//     },
+//     floorBlocks,
+//     platformBlocks,
+//     animations: playerAnimations
+// })
+
 const background = new Sprite({
     position: {
         x: 0,
@@ -155,6 +165,10 @@ function animate() {
     player.checkHorizontalCanvasCollision({image: backgroundImage})
     player.checkVerticalCanvasCollision()
     player.update()
+
+    // player2.checkHorizontalCanvasCollision({image: backgroundImage})
+    // player2.checkVerticalCanvasCollision()
+    // player2.update()
     movePlayer()
 
     c.restore()
@@ -171,12 +185,12 @@ function movePlayer() {
     if (keys.d.pressed) { 
         player.lastDirection = 'right'
         if(!player.attacking && !player.rolling) player.swapAnimation('run')
-        player.velocity.x = 1.5
+        player.velocity.x = 5
         player.panLeft({canvas: canvas, camera: camera, scale: scale, image: backgroundImage})
     } else if (keys.a.pressed) { 
         player.lastDirection = 'left'
         if(!player.attacking && !player.rolling) player.swapAnimation('run')
-        player.velocity.x = -1.5 
+        player.velocity.x = -5
         player.panRight({camera: camera})
     } else if (player.velocity.y === 0 && !player.attacking) {
         player.swapAnimation('idle')
