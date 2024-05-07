@@ -1,6 +1,6 @@
 const playerAnimations = {
     idle :{
-        frameBuffer: 20,
+        frameBuffer: 5,
         images: [
             './img/player/01_idle/idle_1.png',
             './img/player/01_idle/idle_2.png',
@@ -13,7 +13,7 @@ const playerAnimations = {
         ]
     },
     run: {
-        frameBuffer: 20,
+        frameBuffer: 5,
         images: [
             './img/player/02_run/run_1.png',
             './img/player/02_run/run_2.png',
@@ -67,7 +67,7 @@ const playerAnimations = {
         ]
     },
     roll: {
-        frameBuffer: 20,
+        frameBuffer: 5,
         images: [
             './img/player/04_roll/roll_1.png',
             './img/player/04_roll/roll_2.png',
@@ -80,7 +80,7 @@ const playerAnimations = {
         ]
     },
     atk_1: {
-        frameBuffer: 8,
+        frameBuffer: 2,
         images: [
             './img/player/05_1_atk/1_atk_1.png',
             './img/player/05_1_atk/1_atk_2.png',
@@ -96,7 +96,7 @@ const playerAnimations = {
         ]
     },
     atk_2: {
-        frameBuffer: 6,
+        frameBuffer: 2,
         images: [
             './img/player/06_2_atk/2_atk_1.png',
             './img/player/06_2_atk/2_atk_2.png',
@@ -120,7 +120,7 @@ const playerAnimations = {
         ]
     },
     atk_3: {
-        frameBuffer: 4,
+        frameBuffer: 1.1,
         images: [
             './img/player/07_3_atk/3_atk_1.png',
             './img/player/07_3_atk/3_atk_2.png',
@@ -153,7 +153,7 @@ const playerAnimations = {
         ]
     },
     sp_atk: {
-        frameBuffer: 6,
+        frameBuffer: 1,
         images: [
             './img/player/08_sp_atk/sp_atk_1.png',
             './img/player/08_sp_atk/sp_atk_2.png',
